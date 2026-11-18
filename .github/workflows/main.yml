@@ -38,7 +38,7 @@ jobs:
         shell: msys2 {0}
         run: |
           cp build/_deps/sfml-build/lib/sfml-*.dll build/
-          cp /ucrt64/bin/openal32.dll build/
+          cp /ucrt64/bin/libopenal-1.dll build/
           cp /ucrt64/bin/libFLAC*.dll build/ 2>/dev/null || true
           cp /ucrt64/bin/libvorbis*.dll build/ 2>/dev/null || true
           cp /ucrt64/bin/libogg*.dll build/ 2>/dev/null || true
