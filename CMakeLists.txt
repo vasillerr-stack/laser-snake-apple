@@ -23,14 +23,5 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(LASER_SNAKE main.cpp)
 set_target_properties(LASER_SNAKE PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-configure_file("${CMAKE_SOURCE_DIR}/assets/DejaVuSansMono.ttf" "${CMAKE_BINARY_DIR}/font.ttf" COPYONLY)
 target_link_libraries(LASER_SNAKE PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
 
-if(WIN32)
-    add_custom_command(TARGET LASER_SNAKE POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:LASER_SNAKE>
-        $<TARGET_FILE_DIR:LASER_SNAKE>
-        COMMAND_EXPAND_LISTS
-    )
-endif()
