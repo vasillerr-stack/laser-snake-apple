@@ -47,7 +47,7 @@ jobs:
           cp /ucrt64/bin/libwinpthread-1.dll build/ 2>/dev/null || true
 
       - name: Upload Windows game
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: LASER-SNAKE-Windows
           path: |
