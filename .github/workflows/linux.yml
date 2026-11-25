@@ -1,0 +1,40 @@
+name: Linux Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Dowload source
+        uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y g++ cmake libsfml-dev
+
+      - name: Configure
+        run: cmake -S . -B build
+
+      - name: Compile
+        run: cmake --build build -j$(nproc)
+
+      - name: Package game
+        run: |
+          mkdir -p portable/lib
+          cp build/laser-snake-apple portable/game
+
+          ldd portable/game | grep -E 'libsfml|libopenal' | awk '{print $3}' | xargs -r -I{} cp -L {} portable/lib/
+
+          printf '#!/bin/bash\nDIR="$(cd "$(dirname "$0")" && pwd)"\nexport LD_LIBRARY_PATH="$DIR/lib:$LD_LIBRARY_PATH"\nexec "$DIR/game"\n' > portable/run.sh
+
+          chmod +x portable/run.sh
+          tar -czf laser-snake-apple-linux.tar.gz portable
+
+      - name: Upload Linux game
+        uses: actions/upload-artifact@v6
